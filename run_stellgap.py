@@ -164,29 +164,3 @@ if __name__ == "__main__":
             XMETRIC=inargs.xmetric,
             XSTGAP=inargs.xst,
             SOUND=inargs.sound)
-
-    # wout_vmec = f'{dirname}/wout_{extname}.nc'
-    # wout_boozmn = f'{dirname}/boozmn_{extname}.nc'
-
-    # if inargs.vmec:
-    #     print('\nRun VMEC\n')
-    #     result_vmec = call_xvmec(dirname, extname)
-
-    # nsurf = get_surfaces_file(wout_vmec)
-
-    # if inargs.booz:
-    #     print('\nMake booz_xform input\n')
-    #     in_file_booz = make_xform_input(dirname, extname, wout_vmec)
-    #     print('\nCall booz_xform\n')
-    #     result_xform = call_xform(dirname, in_file_booz)
-
-    # if inargs.xmetric:
-    #     print('\nCall xmetric\n')
-    #     result_xmetric = call_xmetric(dirname, wout_boozmn)
-
-    # if inargs.xst:
-    #     print('\nCall xstgap\n')
-    #     result_xstgap = call_xstgap(dirname,
-    #                                 irads=(nsurf-2),
-    #                                 ir_fine_scl=inargs.fine,
-    #                                 sound=inargs.sound)
