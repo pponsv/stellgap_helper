@@ -1,1 +1,5 @@
+#   Filetypes
 *.pdf
+
+#   Directories
+__pycache__/
