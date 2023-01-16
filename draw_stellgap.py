@@ -11,6 +11,8 @@ def read_output(path):
         df.columns = ['rho', 'freq', 'm', 'n']
     elif len(df.columns) == 6:  # xstgap_snd
         df.columns = ['rho', 'freq', 'm', 'n', 'unk1', 'unk2']
+    else: 
+        raise(ValueError('File not compliant'))
     return df.sort_values(by=['n', 'm', 'rho'])
 
 
@@ -37,7 +39,7 @@ def plot_all(df, *args, ax=None, quantity='freq', **kwargs):
 
 
 if __name__ == '__main__':
-    path = "/home/pedro/Documents/stellgap_pruebas/test/testone/alfven_post"
+    path = "/home/pedro/Documents/stellgap_pruebas/test/testone/alfven_spec"
     data = read_output(path)
 
     plot = True
@@ -45,11 +47,11 @@ if __name__ == '__main__':
     if plot:
         with ps.rc_context(ps.pub_style_one):
             fig, ax = plt.subplots(1, 1)
-            plot_all(data, marker='.', ls='', color='k',
+            plot_all(data, marker='.', ls='', color='#696969', alpha=0.6,
                      ms=1, ax=ax, quantity='freq')
             plot_nm(data, n=2, m=6, ls='', marker='.',
                     color='r', ms=2, ax=ax, quantity='freq')
-            plot_nm(data, n=2, m=5, ls='', marker='.',
+            plot_nm(data, n=2, m=4, ls='', marker='.',
                     color='b', ms=2, ax=ax, quantity='freq')
             # plt.plot('rho', 'Freq [kHz]', 'or', data=data)
             ax.legend()
