@@ -5,8 +5,11 @@ import plotting_styles as ps
 
 
 def read_output(path):
-    df = pd.read_csv(path, skiprows=[0], header=None, sep='\s+',
-                     names=['rho', 'Freq [kHz]', 'm', 'n'])
+    df = pd.read_csv(path, skiprows=[0], header=None, sep='\s+')
+    if len(df.columns) == 4:   # xstgap
+        df.columns=['rho', 'Freq [kHz]', 'm', 'n']
+    elif len(df.columns) == 6: # xstgap_snd
+        df.columns=['rho', 'Freq [kHz]', 'm', 'n', 'unk1', 'unk2']
     return df.sort_values(by=['n', 'm', 'rho'])
 
 
@@ -27,7 +30,7 @@ def plot_all(df, *args, ax=None, **kwargs):
 
 
 if __name__ == '__main__':
-    path = "/home/pedro/Documents/stellgap_pruebas/test/testzero/alfven_post"
+    path = "/home/pedro/Documents/stellgap_pruebas/test/testone/alfven_post"
     data = read_output(path)
 
     with ps.rc_context(ps.pub_style_one):
