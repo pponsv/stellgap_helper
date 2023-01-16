@@ -39,7 +39,7 @@ def plot_all(df, *args, ax=None, quantity='freq', **kwargs):
 
 
 if __name__ == '__main__':
-    path = "/home/pedro/Documents/stellgap_pruebas/test/testone/alfven_spec"
+    path = "/home/pedro/Documents/stellgap_pruebas/test/testone/alfven_post"
     data = read_output(path)
 
     plot = True
