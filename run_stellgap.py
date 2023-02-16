@@ -19,7 +19,10 @@ def parse_args():
                         metavar='Extension',
                         help='Extension name of the VMEC file')
     parser.add_argument('--sound',
-                        help='Run STELLGAP with sound coupling. If not present, no sound coupling.',
+                        help='Run STELLGAP with sound coupling. If not present, defaults to xstgap.',
+                        action='store_true')
+    parser.add_argument('--rw',
+                        help='Run STELLGAP rewrite. If not present, defaults to xstgap.',
                         action='store_true')
     parser.add_argument('--vmec',
                         help='Run VMEC on input.ext',
@@ -86,8 +89,13 @@ def call_xmetric(dirname, boozmn_file):
     return result
 
 
-def call_xstgap(dirname, irads, ir_fine_scl, sound=False, logname='log.tmp'):
-    executable = ('xstgap_snd' if sound == True else 'xstgap')
+def call_xstgap(dirname, irads, ir_fine_scl, sound=False, logname='log.tmp', rw=False):
+    if sound==True:
+        executable = 'xstgap_snd'
+    elif rw==True:
+        executable = 'xstgap_new'
+    else:
+        executable= 'xstgap'
     cwd = os.getcwd()
     os.chdir(dirname)
     result = subprocess.call(
@@ -96,7 +104,7 @@ def call_xstgap(dirname, irads, ir_fine_scl, sound=False, logname='log.tmp'):
     return result
 
 
-def run_all(dirname, extname, num_fine=300, VMEC=False, BOOZ=False, XMETRIC=False, XSTGAP=False, SOUND=False):
+def run_all(dirname, extname, num_fine=300, VMEC=False, BOOZ=False, XMETRIC=False, XSTGAP=False, SOUND=False, RW=False):
     dirname = os.path.abspath(inargs.dir)
     extname = inargs.ext
 
@@ -124,7 +132,8 @@ def run_all(dirname, extname, num_fine=300, VMEC=False, BOOZ=False, XMETRIC=Fals
         result_xstgap = call_xstgap(dirname,
                                     irads=(nsurf-2),
                                     ir_fine_scl=num_fine,
-                                    sound=SOUND)
+                                    sound=SOUND, 
+                                    rw=RW)
 
 
 if __name__ == "__main__":
@@ -163,4 +172,5 @@ if __name__ == "__main__":
             BOOZ=inargs.booz,
             XMETRIC=inargs.xmetric,
             XSTGAP=inargs.xst,
-            SOUND=inargs.sound)
+            SOUND=inargs.sound,
+            RW=inargs.rw)

@@ -5,7 +5,8 @@ import plotting_styles as ps
 from itertools import product
 
 
-def read_output(path):
+def read_alfven_post(path):
+    path = f"{path}/alfven_post"
     df = pd.read_csv(path, skiprows=[0], header=None, sep='\s+')
     if len(df.columns) == 4:   # xstgap
         df.columns = ['rho', 'freq', 'm', 'n']
@@ -15,6 +16,15 @@ def read_output(path):
         raise(ValueError('File not compliant'))
     return df.sort_values(by=['n', 'm', 'rho'])
 
+def read_ion_profile(path):
+    path = f"{path}/ion_profile"
+    df = pd.read_csv(path, header=None, sep='\s+')
+    print(df)
+    if len(df.columns) == 4:   # xstgap
+        df.columns = ['rho', 'ion_density', 'iota', 'va']
+    else: 
+        raise(ValueError('File not compliant'))
+    return df.sort_values(by=['rho'])
 
 def plot_nm(df, n, m, *args, ax=None, quantity='freq',  **kwargs):
     b = df[(df['n'] == n) & (df['m'] == m)]
@@ -37,10 +47,19 @@ def plot_all(df, *args, ax=None, quantity='freq', **kwargs):
     ax.legend()
     ax.get_legend().remove()
 
+def plot_profiles(profiles, axes=None, *args, **kwargs):
+    if axes is None:
+        fig, axes = plt.subplots(3,1)
+    axes[0].plot('rho', 'ion_density', *args, data=profiles, **kwargs)
+    axes[1].plot('rho', 'iota', *args, data=profiles, **kwargs)
+    axes[2].plot('rho', 'va',  *args, data=profiles, **kwargs)
+    return axes
 
 if __name__ == '__main__':
-    path = "/home/pedro/Documents/stellgap_pruebas/test/testone/alfven_post"
-    data = read_output(path)
+    dirpath = "/home/pedro/Documents/stellgap_pruebas/test/testone"
+    data = read_alfven_post(dirpath)
+    profiles_new = read_ion_profile(dirpath)
+    profiles_old = read_ion_profile(dirpath+'/../testzero')
 
     plot = True
 
@@ -56,6 +75,10 @@ if __name__ == '__main__':
             # plt.plot('rho', 'Freq [kHz]', 'or', data=data)
             ax.legend()
             ax.set(xlabel=r'$\rho$', ylabel='Freq [kHz]')
+            nfig, nax = plt.subplots(3,1)
+            plot_profiles(profiles_new, nax, 'k')
+            plot_profiles(profiles_old, nax, color='#696969')
+
         plt.show()
         fig.savefig('tmp.pdf')
 
