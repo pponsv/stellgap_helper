@@ -3,6 +3,19 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import plotting_styles as ps
 from itertools import product
+import argparse
+import os
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        prog='run_stellgap', description='Parse arguments')
+    parser.add_argument('--dir',
+                        metavar='Directory',
+                        help='Path to the directory. Can be relative or absolute',
+                        default='./',
+                        type=str)
+    return parser.parse_args()
 
 
 def read_alfven_post(path):
@@ -56,7 +69,12 @@ def plot_profiles(profiles, axes=None, *args, **kwargs):
     return axes
 
 if __name__ == '__main__':
-    dirpath = "/home/pedro/Documents/stellgap_pruebas/test/testone"
+
+    inargs = parse_args()
+
+    dirpath = os.path.abspath(inargs.dir)
+    print(dirpath)
+    # dirpath = "/home/pedro/Documents/stellgap_pruebas/test/testone"
     data = read_alfven_post(dirpath)
     profiles_new = read_ion_profile(dirpath)
     profiles_old = read_ion_profile(dirpath+'/../testzero')
