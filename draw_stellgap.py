@@ -8,7 +8,9 @@ import os
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(prog="run_stellgap", description="Parse arguments")
+    parser = argparse.ArgumentParser(
+        prog="run_stellgap", description="Parse arguments"
+    )
     parser.add_argument(
         "--dir",
         metavar="Directory",
@@ -55,11 +57,15 @@ def plot_all(df, *args, ax=None, quantity="freq", **kwargs):
     for n, m in list(product(pd.unique(df["n"]), pd.unique(df["m"]))):
         data = df[(df["n"] == n) & (df["m"] == m)]
         if ax is None:
-            plt.plot("rho", quantity, data=data, *args, label="_nolegend_", **kwargs)
+            plt.plot(
+                "rho", quantity, data=data, *args, label="_nolegend_", **kwargs
+            )
         else:
-            ax.plot("rho", quantity, data=data, *args, label="_nolegend_", **kwargs)
-    ax.legend()
-    ax.get_legend().remove()
+            ax.plot(
+                "rho", quantity, data=data, *args, label="_nolegend_", **kwargs
+            )
+    # ax.legend()
+    # ax.get_legend().remove()
 
 
 def plot_profiles(profiles, axes=None, *args, **kwargs):
